@@ -18,3 +18,16 @@
          '[adzerk.boot-reload :refer [reload]]                  ;; make reload visible
          '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl]  ;; make it visible
           ])
+
+;; define dev task as composition of subtasks
+(deftask dev
+  "Launch Immediate Feedback Development Environment"
+  []
+  (comp
+    (serve :dir "target")
+    (watch)
+    (reload)
+    (cljs-repl) ;; before cljs task
+    (cljs)
+    (target :dir #{"target"})
+))
